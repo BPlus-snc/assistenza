@@ -170,7 +170,8 @@
           data.forEach(item => {
             html += `<button class="btn" onclick="showNumero('${item.compagnia}', '${item.numero}')">${item.compagnia}</button>`;
           });
-          html += '<button class="btn back" onclick="renderHome()">Indietro</button>';
+          html += '<button class="btn" onclick="showAssistenza()">Torna indietro</button>';
+          html += '<button class="btn back" onclick="renderHome()">Torna alla Home</button>';
           app.innerHTML = html;
         })
         .catch(error => {
