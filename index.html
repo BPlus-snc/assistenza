@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Exo&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+   <title>Assistenza Clienti BPlus snc</title>
+  <style>
+    body {
+      font-family: 'Exo', sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    
+    .wrapper {
+      text-align: center;
+    }
+    #app {
+      background-color: white;
+      padding: 40px 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 480px;      /* oppure 500px o più, a seconda di quanto spazio vuoi */
+      min-width: 320px;      /* per evitare che si stringa troppo */
+      margin: 10px;     /* centrato */
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      font-size: 18px;
+      margin-bottom: 18px;
+      font-weight: bold;
+    }
+    h3 {
+      font-size: 12px;
+      margin-bottom: 18px;
+      font-style: italic
+    }
+    .btn {
+      font-family: 'Exo', sans-serif;
+      font-weight: bold;
+      display: block;
+      margin: 10px auto;
+      padding: 15px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      text-decoration: none;
+      box-sizing: border-box;
+    }
+    .btn:hover {
+      background-color: #0056b3;
+    }
+    .back {
+      margin-top: 20px;
+      background-color: #ccc;
+    }
+    
+    /*stile logo*/
+    .header-logo {
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+    }
+    
+    .header-logo img {
+      max-width: 480px;  
+      min-width: 320px;  
+      align-items: center;
+    }
+    
+    /*stile orari*/
+    .orari-box {
+      background-color: #f9f9f9;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 500px;
+      margin: 0 auto 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    .orari-box ul {
+      list-style: none;
+      padding: 0;
+      align-items: center;
+    }
+    .orari-box li {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center; /* 👈 centra il contenuto orizzontalmente */
+      text-align: center;
+    }
+    .orari-box li:last-child {
+      border-bottom: none;
+      align-items: center;
+    }
+    .orari-box li .icon {
+      margin-right: 10px;
+      font-size: 18px;
+    }
+    .stato-aperto {
+      color: #28a745;
+      font-weight: bold;
+    }
+    .stato-chiuso {
+      color: #dc3545;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+  
+    <header class="header-logo">
+      <img src="logo.png" alt="Logo Agenzia" />
+    </header>
+    <div id="app"></div>
+  </div>  
+
+  <script>
+    const app = document.getElementById('app');
+
+    function renderHome() {
+      app.innerHTML = `
+        <h1>In cosa posso aiutarti?</h1>
+        <button class="btn" onclick="showAssistenza()">🚗 Assistenza stradale</button>
+        <button class="btn" onclick="showSinistro()">📄 Denunciare un sinistro</button>
+        <button class="btn" onclick="showPreventivo()">📋 Richiedere un preventivo</button>
+        <button class="btn" onclick="showOrari()">📆 Orari e apertura</button>
+      `;
+    }
+
+    function showAssistenza() {
+      fetch('assistenza.json')
+        .then(response => response.json())
+        .then(data => {
+          let html = '<h1>Con quale compagnia hai la polizza?</h1>';
+          data.forEach(item => {
+            html += `<button class="btn" onclick="showNumero('${item.compagnia}', '${item.numero}')">${item.compagnia}</button>`;
+          });
+          html += '<button class="btn back" onclick="renderHome()">Indietro</button>';
+          app.innerHTML = html;
+        })
+        .catch(error => {
+          app.innerHTML = '<p>Errore nel caricamento delle compagnie.</p>';
+          console.error('Errore nel fetch del JSON:', error);
+        });
+    }
+
+    function showNumero(compagnia, numero) {
+      app.innerHTML = `
+        <h1>${compagnia}</h1>
+        <p>Chiama il numero per assistenza stradale:</p>
+        <p><strong>${numero}</strong></p>
+        <button class="btn back" onclick="renderHome()">Torna alla home</button>
+      `;
+    }
+
+    function showSinistro() {
+      app.innerHTML = `
+        <h1>Che tipo di sinistro?</h1>
+        <button class="btn" onclick="showSinistroAuto()">Auto</button>
+        <button class="btn" onclick="showSinistroCasa()">Casa</button>
+        <button class="btn" onclick="showSinistroAltro()">Altro</button>
+        <button class="btn back" onclick="renderHome()">Indietro</button>
+      `;
+    }
+
+    function showSinistroAuto() {
+      app.innerHTML = `
+        <h1>Denuncia sinistro auto</h1>
+        <h2>-Mantenete la calma!-</h2>
+        <p>👍 Se andate d'accordo sulla versione dei fatti, compilate il modulo di constatazione amichevole (il modulo Giallo e Blu) in ogni sua parte e firmate entrambi.</p>
+        <p>📧 Invialo via whatsapp al nostro numero oppure via mail all'indirizzo <strong>agenzia.bplus@gmail.com</strong>.</p>
+        <p>🤷‍♂️ Se né tu né la controparte non avete un modulo a disposizione potete andare in una qualsiasi Agenzia di assicurazione e chiederne uno, oppure puoi stampare e compilare questo disponibile online.</p>
+        <p>Se non riuscite a compilare il modulo in questo momento, scambiatevi le generalità, fai delle foto all'accaduto e datevi appuntamento per compilare il modulo in un secondo momento</p>
+        <p>🙅‍♂️ Non andate d'accordo sulla versione dei fatti? Nessun problema: scatta una foto, prendi le generalità (almeno la targa) della controparte e congedati. Non appena saremo aperti passa in agenzia e ti aiuteremo noi!</p>
+        <p>🚨 Se il sinistro è molto grave e ritieni che sia necessario l'intervento delle forze dell'ordine, contatta subito il 112! Vi aiuteranno a risolvere la questione.</p>
+        <a href="https://video.alvolante.it/pdf/modulo-constatazione-amichevole.pdf" target="_blank" class="btn">Scarica il modulo</a>  
+        <button class="btn back" onclick="renderHome()">Torna alla home</button>
+      `;
+    }
+
+    function showSinistroCasa() {
+      app.innerHTML = `
+        <h1>Denuncia sinistro casa</h1>
+        <p>Se hai avuto un sinistro in casa, puoi scaricare il modulo e compilarlo, oppure, potrai chiamarci quando saremo aperti per spiegarci l'accaduto e compilarlo assieme!</p>
+        <a href="https://drive.google.com/file/d/1V5qeuWZMqeBBYc95O29ZU_MOth1ECDfv/view?usp=drive_link" target="_blank" class="btn">Scarica il modulo</a> 
+        <button class="btn back" onclick="renderHome()">Torna alla home</button>
+      `;
+    }
+
+    function showSinistroAltro() {
+      app.innerHTML = `
+        <h1>Altri sinistri</h1>
+        <p>Ti sei infortunato? Hai causato un danno a qualcuno? Puoi scaricare il modulo e compilarlo, oppure, potrai chiamarci quando saremo aperti per spiegarci l'accaduto e compilarlo assieme!</p>
+        <a href="https://drive.google.com/file/d/1V5qeuWZMqeBBYc95O29ZU_MOth1ECDfv/view?usp=drive_link" target="_blank" class="btn">Scarica il modulo</a> 
+        <button class="btn back" onclick="renderHome()">Torna alla home</button>
+      `;
+    }
+
+    function showPreventivo() {
+      app.innerHTML = `
+        <h1>Che tipo di polizza ti interessa?</h1>
+        <button class="btn" onclick="showPreventivoAuto()">Auto 🚗</button>
+        <button class="btn" onclick="showPreventivoCasa()">Casa 🏠</button>
+        <button class="btn" onclick="showPreventivoAltro()">Altro 🧑‍🧑‍🧒</button>
+        <button class="btn back" onclick="renderHome()">Indietro</button>
+      `;
+    }
+
+    function showPreventivoAuto() {
+      app.innerHTML = `
+        <h1>Preventivo Auto 🚗</h1>
+        <p>Compila il modulo che troverai al link sottostante e indica tutti i dati richiesti, non appena possibile faremo il preventivo in tutte le nostre Compagnie dandoti il premio migliore.</p>
+        <h3>Ricordati di inviarci i tuoi documenti e, se ce l'hai, il libretto del tuo mezzo!</h3>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScP5aOn-XQUYEGO_SYgsbodT0l-n_TzLgUrSqIm1cWP_o1S6g/viewform" target="_blank" class="btn">Compila il modulo</a>
+        <button class="btn back" onclick="renderHome()">Torna alla home</button>
+      `;
+    }
+
+    function showPreventivoCasa() {
+      app.innerHTML = `
+        <h1>Preventivo Casa 🏠</h1>
+        <p>Compila il modulo che troverai al link sottostante e indica tutti i dati richiesti, non appena possibile faremo il preventivo in tutte le nostre Compagnie dandoti il premio migliore.</p>
+        <h3>Ricordati di inviarci i tuoi documenti!</h3>
+        <a href="https://forms.gle/aEtGCviiRqzR3Yz26" target="_blank" class="btn">Compila il modulo</a> 
+        <button class="btn back" onclick="renderHome()">Torna alla home</button>
+      `;
+    }
+
+    function showPreventivoAltro() {
+      app.innerHTML = `
+        <h1>Altre richieste 🧑‍🧑‍🧒</h1>
+        <p>Sei interessato ad assicurare la tua vita, la tua professione o la tua famiglia?</p>
+        <p>Contattaci via email a <strong>agenzia.bplus@gmail.com</strong> o via whatsapp per ricevere un preventivo personalizzato!</p>
+        <button class="btn back" onclick="renderHome()">Torna alla home</button>
+      `;
+    }
+    
+    function showOrari() {
+      const orariAgenzia = {
+        lunedi:    ["09:00", "12:00"],
+        martedi:   ["09:00", "12:00"],
+        mercoledi: ["15:00", "18:00"],
+        giovedi:   ["15:00", "18:00"],
+        venerdi:   ["09:00", "12:00"],
+        sabato:    [],
+        domenica:  []
+      };
+    
+      // Funzione per calcolare la data di Pasqua
+      function getPasqua(year) {
+        const f = Math.floor;
+        const G = year % 19;
+        const C = f(year / 100);
+        const H = (C - f(C / 4) - f((8 * C + 13) / 25) + 19 * G + 15) % 30;
+        const I = H - f(H / 28) * (1 - f(29 / (H + 1)) * f((21 - G) / 11));
+        const J = (year + f(year / 4) + I + 2 - C + f(C / 4)) % 7;
+        const L = I - J;
+        const month = 3 + f((L + 40) / 44);
+        const day = L + 28 - 31 * f(month / 4);
+        return new Date(year, month - 1, day); // JS: month is 0-indexed
+      }
+    
+      const now = new Date();
+      const pasqua = getPasqua(now.getFullYear());
+      const pasquetta = new Date(pasqua);
+      pasquetta.setDate(pasqua.getDate() + 1);
+      const pasquettaKey = `${pasquetta.getDate().toString().padStart(2, "0")}-${(pasquetta.getMonth() + 1).toString().padStart(2, "0")}`;
+    
+      const festivita = [
+        "01-01", // Capodanno
+        "06-01", // Epifania
+        "25-04", // Festa della Liberazione
+        "01-05", // Festa dei Lavoratori
+        "02-06", // Festa della Repubblica
+        "15-08", // Ferragosto
+        "01-11", // Ognissanti
+        "08-12", // Immacolata Concezione
+        "25-12", // Natale
+        "26-12", // Santo Stefano
+        pasquettaKey // aggiunta Pasquetta dinamicamente
+      ];
+    
+      const giorni = ["domenica", "lunedi", "martedi", "mercoledi", "giovedi", "venerdi", "sabato"];
+      const oggi = `${now.getDate().toString().padStart(2, "0")}-${(now.getMonth() + 1).toString().padStart(2, "0")}`;
+      const isFestivo = festivita.includes(oggi);
+      const giorno = giorni[now.getDay()];
+      const orari = orariAgenzia[giorno] || [];
+      const oraAttuale = now.toTimeString().slice(0,5); // "HH:MM"
+    
+      let aperto = false;
+      if (!isFestivo) {
+        for (let i = 0; i < orari.length; i += 2) {
+          const inizio = orari[i];
+          const fine = orari[i + 1];
+          if (oraAttuale >= inizio && oraAttuale <= fine) {
+            aperto = true;
+            break;
+          }
+        }
+      }
+    
+      let statoHtml = "";
+      if (isFestivo) {
+        statoHtml = `<p class="stato-chiuso">🎉 Oggi è festivo – l'agenzia è chiusa</p>`;
+      } else {
+        statoHtml = `<p class="${aperto ? 'stato-aperto' : 'stato-chiuso'}">${aperto ? "✅ In questo momento siamo aperti" : "❌ In questo momento siamo chiusi"}</p>
+        <p>Contattaci per prendere appuntamento</p>`;
+      }
+    
+      let listaOrari = "<ul>";
+      for (let [giornoSettimana, fasce] of Object.entries(orariAgenzia)) {
+        const orariTesto = fasce.length > 0
+          ? `${fasce[0]} - ${fasce[1]}${fasce[2] ? " / " + fasce[2] + " - " + fasce[3] : ""}`
+          : "Chiuso";
+        listaOrari += `
+          <li><strong>${giornoSettimana.charAt(0).toUpperCase() + giornoSettimana.slice(1)}: ${orariTesto}</strong></li>`;
+      }
+      listaOrari += "</ul>";
+    
+      app.innerHTML = `
+        <h1>Orari di apertura</h1>
+        <div class="orari-box">
+          <p>Oggi è <strong>${giorno.charAt(0).toUpperCase() + giorno.slice(1)}</strong></p>
+          ${statoHtml}
+          ${listaOrari}
+        </div>
+        <button class="btn back" onclick="renderHome()">Torna alla home</button>
+      `;
+    }
+    renderHome();
+  </script>
+  
+</body>
+</html>
