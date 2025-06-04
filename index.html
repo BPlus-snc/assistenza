@@ -149,6 +149,18 @@
       text-decoration: underline;
       color: #007BFF; /* colore blu */
     }
+    
+    /* stile Whatsapp */
+    .whatsapp-link {
+      text-decoration: none;
+      color: #25D366; /* colore ufficiale WhatsApp */
+      font-weight: bold;
+    }
+    
+    .whatsapp-link:hover {
+      text-decoration: underline;
+      color: #128C7E;
+    }
   </style>
 </head>
 
@@ -216,7 +228,8 @@
         <h1>Denuncia sinistro auto</h1>
         <h2>-Mantenete la calma!-</h2>
         <p>👍 Se andate d'accordo sulla versione dei fatti, compilate il modulo di constatazione amichevole (il modulo Giallo e Blu) in ogni sua parte e firmate entrambi.</p>
-        <p>📧 Invialo via whatsapp al nostro numero oppure via mail all'indirizzo <strong>agenzia.bplus@gmail.com</strong>.</p>
+        <p>📧 Invialo via <p><strong><a href="https://wa.me/393348778713" target="_blank" class="whatsapp-link"> WhatsApp al nostro numero</a></strong></p>
+ oppure via mail all'indirizzo <strong>agenzia.bplus@gmail.com</strong>.</p>
         <p>🤷‍♂️ Se né tu né la controparte non avete un modulo a disposizione potete andare in una qualsiasi Agenzia di assicurazione e chiederne uno, oppure puoi stampare e compilare questo disponibile online.</p>
         <p>Se non riuscite a compilare il modulo in questo momento, scambiatevi le generalità, fai delle foto all'accaduto e datevi appuntamento per compilare il modulo in un secondo momento</p>
         <p>🙅‍♂️ Non andate d'accordo sulla versione dei fatti? Nessun problema: scatta una foto, prendi le generalità (almeno la targa) della controparte e congedati. Non appena saremo aperti passa in agenzia e ti aiuteremo noi!</p>
@@ -352,7 +365,7 @@
         statoHtml = `<p class="stato-chiuso">🎉 Oggi è festivo – l'agenzia è chiusa</p>`;
       } else {
         statoHtml = `<p class="${aperto ? 'stato-aperto' : 'stato-chiuso'}">${aperto ? "✅ In questo momento siamo aperti" : "❌ In questo momento siamo chiusi"}</p>
-        <p>Contattaci per prendere appuntamento</p>`;
+        <p><a href="https://wa.me/393348778713" target="_blank" class="whatsapp-link">Scrivici su whatsapp</a> per prendere appuntamento</p>`;
       }
     
       let listaOrari = "<ul>";
