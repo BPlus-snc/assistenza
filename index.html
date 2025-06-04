@@ -170,7 +170,6 @@
           data.forEach(item => {
             html += `<button class="btn" onclick="showNumero('${item.compagnia}', '${item.numero}')">${item.compagnia}</button>`;
           });
-          html += '<button class="btn" onclick="showAssistenza()">Torna indietro</button>';
           html += '<button class="btn back" onclick="renderHome()">Torna alla Home</button>';
           app.innerHTML = html;
         })
@@ -185,6 +184,8 @@
         <h1>${compagnia}</h1>
         <p>Chiama il numero per assistenza stradale:</p>
         <p><strong>${numero}</strong></p>
+        
+        <button class="btn back" onclick="showAssistenza()">Torna indietro</button>
         <button class="btn back" onclick="renderHome()">Torna alla home</button>
       `;
     }
