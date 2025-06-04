@@ -26,10 +26,16 @@
       border-radius: 20px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
       width: 100%;
-      max-width: 480px;      /* oppure 500px o più, a seconda di quanto spazio vuoi */
-      min-width: 320px;      /* per evitare che si stringa troppo */
-      margin: 10px;     /* centrato */
+      margin: 10px;
       box-sizing: border-box;
+    }
+    
+    /* Solo per schermi più larghi (tablet e desktop) */
+    @media (min-width: 600px) {
+      #app {
+        max-width: 500px;
+        margin: 40px auto;
+      }
     }
     h1 {
       font-size: 22px;
